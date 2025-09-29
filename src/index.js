@@ -2,11 +2,12 @@ const { prisma } = require("../db/config");
 
 async function createUserWithPost({ name, email, title, content }) {
   // Write your code here
-  try{
+  
     if (!name || !email || !title || !content){
       return ({ success: false }) 
     }
-    prisma.$transaction(async(tx)=>{
+  try{
+    await prisma.$transaction(async(tx)=>{
       let user = await tx.User.create({
         data : {
           name : name,
@@ -20,9 +21,9 @@ async function createUserWithPost({ name, email, title, content }) {
           content : content
         }
       })
-      return ({success: true})
+    
     })
-
+    return ({success: true})
 
 
   }catch(error){
